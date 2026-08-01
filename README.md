@@ -1,5 +1,5 @@
 # E-commerceForCommunicationStore
-### Mobile Shop
+### Mobile Shop 
 
 A small e-commerce site for a mobile phone & accessories shop, built with ASP.NET Core Razor Pages, EF Core, and PostgreSQL.
 
