@@ -1,0 +1,64 @@
+@page
+@model MobileShop.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<h2 class="mb-4">Your Cart</h2>
+
+@if (Model.Items.Count == 0)
+{
+    <div class="ms-panel text-center py-5">
+        <p class="text-muted mb-3">Your cart is empty.</p>
+        <a asp-page="/Index" class="btn btn-primary">Continue Shopping</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="ms-panel">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="ms-cart-row">
+                        <partial name="_ProductThumb" model="@(new ProductThumbViewModel { ImagePath = item.ImagePath, Name = item.ProductName, CssClass = "ms-product-thumb sm" })" />
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">@item.ProductName</h6>
+                            <p class="text-muted small mb-2">Rs. @item.UnitPrice.ToString("N0") each</p>
+                            <form method="post" asp-page-handler="Update" class="d-flex align-items-center gap-2">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <div class="ms-qty-stepper">
+                                    <button type="button" data-step="-1">&minus;</button>
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" />
+                                    <button type="button" data-step="1">&plus;</button>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                            </form>
+                        </div>
+                        <div class="text-end">
+                            <p class="fw-bold mb-2">Rs. @item.LineTotal.ToString("N0")</p>
+                            <form method="post" asp-page-handler="Remove">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-sm btn-link text-danger p-0">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ms-panel">
+                <h5 class="mb-3">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Items</span>
+                    <span>@Model.Items.Sum(i => i.Quantity)</span>
+                </div>
+                <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-3 mb-4">
+                    <span>Total</span>
+                    <span class="ms-price">Rs. @Model.Total.ToString("N0")</span>
+                </div>
+                <a asp-page="/Checkout/Index" class="btn btn-success w-100 btn-lg">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+}

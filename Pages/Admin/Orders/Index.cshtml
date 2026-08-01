@@ -1,0 +1,80 @@
+@page
+@model MobileShop.Pages.Admin.Orders.IndexModel
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h2 class="mb-4">Orders</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="ms-stat-card">
+            <div class="ms-stat-value">@Model.PendingCount</div>
+            <div class="ms-stat-label">Pending Orders</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="ms-stat-card">
+            <div class="ms-stat-value">@Model.AwaitingVerificationCount</div>
+            <div class="ms-stat-label">Needs Verification</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="ms-stat-card">
+            <div class="ms-stat-value">Rs. @Model.TotalRevenue.ToString("N0")</div>
+            <div class="ms-stat-label">Total Revenue</div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a class="btn btn-sm ms-pill @(Model.StatusFilter == null ? "active" : "")" asp-page="/Admin/Orders/Index">All</a>
+    @foreach (var status in Enum.GetValues<MobileShop.Models.OrderStatus>())
+    {
+        <a class="btn btn-sm ms-pill @(Model.StatusFilter == status ? "active" : "")"
+           asp-page="/Admin/Orders/Index" asp-route-statusFilter="@status">@status</a>
+    }
+</div>
+
+<div class="ms-panel p-0">
+    <div class="table-responsive">
+        <table class="table ms-table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Payment</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Verified</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td class="fw-semibold">#@order.Id</td>
+                        <td class="text-muted">@order.CreatedAt.ToLocalTime().ToString("dd MMM, hh:mm tt")</td>
+                        <td>@order.CustomerName<br /><small class="text-muted">@order.CustomerPhone</small></td>
+                        <td>@order.PaymentMethod</td>
+                        <td>Rs. @order.TotalAmount.ToString("N0")</td>
+                        <td><span class="ms-badge @MobileShop.Models.OrderStatusStyle.BadgeClass(order.Status)">@order.Status</span></td>
+                        <td>
+                            @if (order.AdminVerified)
+                            {
+                                <span class="ms-badge ms-badge-active">✓</span>
+                            }
+                            else
+                            {
+                                <span class="ms-badge ms-badge-pending">Pending</span>
+                            }
+                        </td>
+                        <td class="text-end"><a asp-page="/Admin/Orders/Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-secondary">View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

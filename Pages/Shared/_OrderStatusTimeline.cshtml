@@ -1,0 +1,20 @@
+@model MobileShop.Models.OrderStatus
+@{
+    var steps = new[] { MobileShop.Models.OrderStatus.Pending, MobileShop.Models.OrderStatus.Confirmed, MobileShop.Models.OrderStatus.Processing, MobileShop.Models.OrderStatus.Dispatched, MobileShop.Models.OrderStatus.Delivered };
+    var currentIndex = Array.IndexOf(steps, Model);
+}
+
+@if (Model == MobileShop.Models.OrderStatus.Cancelled)
+{
+    <p class="mb-0"><span class="ms-badge ms-badge-cancelled">Order Cancelled</span></p>
+}
+else
+{
+    <ul class="ms-timeline">
+        @foreach (var step in steps)
+        {
+            var isDone = Array.IndexOf(steps, step) <= currentIndex;
+            <li class="@(isDone ? "done" : "")">@step</li>
+        }
+    </ul>
+}

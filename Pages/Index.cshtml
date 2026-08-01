@@ -1,0 +1,45 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<div class="ms-hero">
+    <h1>Phones &amp; accessories, delivered to your door</h1>
+    <p>Genuine smartphones, earbuds, chargers and cases &mdash; order as a guest, pay on delivery or online, no account needed.</p>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a class="btn btn-sm ms-pill @(Model.CategoryId == null ? "active" : "")" asp-page="/Index">All</a>
+    @foreach (var category in Model.Categories)
+    {
+        <a class="btn btn-sm ms-pill @(Model.CategoryId == category.Id ? "active" : "")"
+           asp-page="/Index" asp-route-categoryId="@category.Id">@category.Name</a>
+    }
+</div>
+
+@if (Model.Products.Count == 0)
+{
+    <p class="text-muted">No products found.</p>
+}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col">
+            <div class="ms-card h-100 d-flex flex-column">
+                <a asp-page="/Products/Details" asp-route-id="@product.Id">
+                    <partial name="_ProductThumb" model="@(new ProductThumbViewModel { ImagePath = product.ImagePath, Name = product.Name })" />
+                </a>
+                <div class="p-3 d-flex flex-column flex-grow-1">
+                    <span class="ms-category-tag">@product.Category?.Name</span>
+                    <h6 class="mb-2">
+                        <a asp-page="/Products/Details" asp-route-id="@product.Id" class="text-decoration-none text-dark">@product.Name</a>
+                    </h6>
+                    <p class="ms-price mb-3">Rs. @product.Price.ToString("N0")</p>
+                    <a asp-page="/Products/Details" asp-route-id="@product.Id" class="btn btn-outline-primary btn-sm mt-auto">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,29 @@
+@page
+@model MobileShop.Pages.Admin.Account.ChangeEmailModel
+@{
+    ViewData["Title"] = "Change Email";
+}
+
+<h2 class="mb-4">Change Email</h2>
+
+<div class="ms-panel col-lg-5">
+    <p class="text-muted small mb-4">Current email: <strong>@Model.CurrentEmail</strong>. This is also what you sign in with, so make sure you remember the new one.</p>
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <div class="mb-3">
+            <label class="form-label">New Email</label>
+            <input asp-for="NewEmail" class="form-control" autocomplete="email" />
+            <span asp-validation-for="NewEmail" class="text-danger"></span>
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Current Password</label>
+            <input asp-for="CurrentPassword" type="password" class="form-control" autocomplete="current-password" />
+            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Email</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

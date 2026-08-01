@@ -1,0 +1,34 @@
+@page "{id:int}"
+@model MobileShop.Pages.Products.DetailsModel
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<a asp-page="/Index" class="btn btn-link ps-0 mb-2">&larr; Back to shop</a>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <partial name="_ProductThumb" model="@(new ProductThumbViewModel { ImagePath = Model.Product.ImagePath, Name = Model.Product.Name, CssClass = "ms-product-thumb rounded" })" />
+    </div>
+    <div class="col-md-7">
+        <span class="ms-category-tag">@Model.Product.Category?.Name</span>
+        <h2 class="mb-2">@Model.Product.Name</h2>
+        <h4 class="ms-price mb-3">Rs. @Model.Product.Price.ToString("N0")</h4>
+        <p class="text-body">@Model.Product.Description</p>
+
+        <div class="ms-panel mt-4" style="max-width:420px;">
+            @if (Model.Product.Stock > 0)
+            {
+                <p class="mb-3"><span class="ms-badge ms-badge-active">In Stock</span> <span class="text-muted small">@Model.Product.Stock available</span></p>
+                <form method="post" asp-page-handler="AddToCart" asp-route-id="@Model.Product.Id" class="d-flex align-items-center gap-2">
+                    <input type="number" asp-for="Quantity" min="1" max="@Model.Product.Stock" class="form-control" style="width:90px;" />
+                    <button type="submit" class="btn btn-primary flex-grow-1">Add to Cart</button>
+                </form>
+            }
+            else
+            {
+                <p class="mb-0"><span class="ms-badge ms-badge-cancelled">Out of Stock</span></p>
+            }
+        </div>
+    </div>
+</div>
