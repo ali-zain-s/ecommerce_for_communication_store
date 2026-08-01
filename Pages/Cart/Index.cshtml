@@ -28,11 +28,10 @@ else
                             <form method="post" asp-page-handler="Update" class="d-flex align-items-center gap-2">
                                 <input type="hidden" name="productId" value="@item.ProductId" />
                                 <div class="ms-qty-stepper">
-                                    <button type="button" data-step="-1">&minus;</button>
+                                    <button type="button" data-step="-1" aria-label="Decrease quantity">&minus;</button>
                                     <input type="number" name="quantity" value="@item.Quantity" min="1" />
-                                    <button type="button" data-step="1">&plus;</button>
+                                    <button type="button" data-step="1" aria-label="Increase quantity">&plus;</button>
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
                             </form>
                         </div>
                         <div class="text-end">

@@ -31,9 +31,8 @@
                         </li>
                     </ul>
                     <div class="dropdown">
-                        <button class="btn ms-avatar-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn ms-avatar-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
                             <span class="ms-avatar-circle">@(SignInManager.Context.User.Identity?.Name?.Trim().Substring(0, 1).ToUpper() ?? "A")</span>
-                            <span class="d-none d-sm-inline">Account</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end ms-avatar-menu">
                             <li><a class="dropdown-item" asp-area="" asp-page="/Admin/Account/ChangeEmail">✉️ Change Email</a></li>
