@@ -1,4 +1,4 @@
-// Quantity stepper: +/- buttons adjust the adjacent number input.
+// Quantity stepper: +/- buttons adjust the adjacent number input and submit immediately.
 document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-step]');
     if (!btn) return;
@@ -10,6 +10,13 @@ document.addEventListener('click', function (e) {
     var max = input.max ? parseInt(input.max, 10) : Infinity;
     var value = parseInt(input.value || '1', 10) + parseInt(btn.getAttribute('data-step'), 10);
     input.value = Math.min(Math.max(value, min), max);
+    input.form.requestSubmit();
+});
+
+// Typing a quantity directly and tabbing/clicking away also submits.
+document.addEventListener('change', function (e) {
+    if (!e.target.matches('.ms-qty-stepper input[type=number]')) return;
+    e.target.form.requestSubmit();
 });
 
 // Highlight the selected payment method card.
